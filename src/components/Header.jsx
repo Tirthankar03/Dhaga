@@ -3,8 +3,7 @@ import { Button, Flex, Image, Link, useColorMode } from "@chakra-ui/react";
 function Header() {
 	const { colorMode, toggleColorMode } = useColorMode();
   return (
-    <>
-    <div>Headers</div>
+
     <Flex justifyContent={"center"} mt={6} mb='12'>
 			<Image
 				cursor={"pointer"}
@@ -15,7 +14,6 @@ function Header() {
 			/>
 
     </Flex>
-    </>
   )
 }
 

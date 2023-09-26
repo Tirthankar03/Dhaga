@@ -4,7 +4,7 @@ import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import UserPage from "./pages/UserPage";
 import PostPage from "./pages/PostPage";
 import Header from "./components/Header";
-
+import UserHeader from "./components/UserHeader";
 function App() {
 
   return (
@@ -15,6 +15,7 @@ function App() {
       <Route path="/:username/post/:pid" element={<PostPage/>}/>
     </Routes>
      <Button>Hello</Button>
+     <UserHeader/>
     </Container>
 
   )
