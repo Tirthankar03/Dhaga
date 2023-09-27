@@ -17,9 +17,6 @@ function App() {
       <Route path="/:username/post/:pid" element={<PostPage/>}/>
     </Routes>
 
-    {/* extra stuff needed to be deleted */}
-     <Button>Hello</Button>
-      <UserPage/>
 
 
 
