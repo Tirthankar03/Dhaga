@@ -67,9 +67,9 @@ const UserPost = ({postImg, postTitle, likes,replies}) => {
 
           <Text fontSize={"sm"}>{postTitle}</Text>
           {postImg && (            
-          <Box borderRadius={10} border={"1px solid"} overflow={"hidden"} borderColor={"gray.light"}>
+          {/* <Box borderRadius={10} border={"1px solid"} overflow={"hidden"} borderColor={"gray.light"}>
             <Image src={postImg} w={"full"}/>
-          </Box>
+          </Box> */}
           )}
 
           <Flex gap={3} my={1}>
