@@ -8,6 +8,7 @@ import {
   Spinner,
   Text,
 } from "@chakra-ui/react";
+import Comment from "../components/Comment";
 import Actions from "../components/Actions";
 import { useEffect, useState } from "react";
 // import Comment from "../components/Comment";
@@ -79,6 +80,27 @@ function PostPage() {
 			</Flex>
       <Divider my={4}/>
 
+      <Comment 
+      comment="tohri behen ke chodo"
+      createdAt="2d"
+      likes={234}
+      username="johndoe"
+      userAvatar="https://bit.ly/ryan-florence"
+      />
+      <Comment 
+      comment="maa chodd denge"
+      createdAt="69d"
+      likes={169}
+      username="johrasuda"
+      userAvatar="https://bit.ly/prosper-baba"
+      />      
+      <Comment 
+      comment="tohri maa ka burrr"
+      createdAt="720d"
+      likes={59}
+      username="rendisuda"
+      userAvatar="https://bit.ly/code-beast"
+      />
     </>
   );
 }
