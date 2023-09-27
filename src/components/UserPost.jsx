@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import Actions from "./Actions.jsx";
 import { useState } from "react";
 
-function UserPost() {
+const UserPost = ({postImg, postTitle, likes,replies}) => {
   const [liked, setLiked] = useState(false);
 
   return (
@@ -65,19 +65,21 @@ function UserPost() {
             </Flex>
           </Flex>
 
-          <Text fontSize={"sm"}>This is my first post</Text>
-          <Box>
-            <Image src="/post1.png" w={"full"}/>
+          <Text fontSize={"sm"}>{postTitle}</Text>
+          {postImg && (            
+          <Box borderRadius={10} border={"1px solid"} overflow={"hidden"} borderColor={"gray.light"}>
+            <Image src={postImg} w={"full"}/>
           </Box>
+          )}
 
           <Flex gap={3} my={1}>
             <Actions liked={liked} setLiked={setLiked}/>
           </Flex>
 
           <Flex gap={2} alignItems={"center"}>
-            <Text>123 replies</Text>
+            <Text>{replies}replies</Text>
           <Box w={0.5} h={0.5} bg="gray.light" my={2}></Box>
-            <Text color={"gray.light"} fontSize="sm">456 likes</Text>
+            <Text color={"gray.light"} fontSize="sm">{likes} likes</Text>
           </Flex>
         </Flex>
       </Flex>

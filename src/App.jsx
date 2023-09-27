@@ -6,9 +6,6 @@ import PostPage from "./pages/PostPage";
 import Header from "./components/Header";
 
 
-import UserHeader from "./components/UserHeader";
-import UserPost from "./components/UserPost";
-
 
 function App() {
 
@@ -22,8 +19,8 @@ function App() {
 
     {/* extra stuff needed to be deleted */}
      <Button>Hello</Button>
-      <UserHeader/>
-      <UserPost/>
+      <UserPage/>
+
 
 
     </Container>
