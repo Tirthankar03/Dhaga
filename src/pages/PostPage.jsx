@@ -6,4 +6,4 @@ function PostPage() {
   )
 }
 
-export default PostPage
+  export default PostPage
