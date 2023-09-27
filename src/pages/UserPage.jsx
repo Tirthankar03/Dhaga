@@ -5,6 +5,7 @@ function UserPage() {
     <>
     <div>UserPage</div>
     <UserHeader/>
+    <UserPost/>
     </>
 )
 

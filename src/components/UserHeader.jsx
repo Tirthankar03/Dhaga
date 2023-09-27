@@ -25,7 +25,6 @@ function UserHeader() {
     <>
     <div>UserHeader</div>
     <VStack gap={4} alignItems={"start"}>
-      <Box>box1</Box>
 
 
       <Flex 
