@@ -3,6 +3,7 @@ import { Avatar, Divider, Flex, Text } from "@chakra-ui/react";
 import { BsThreeDots } from "react-icons/bs";
 
 import Actions from "../components/Actions";
+import React from "react";
 
 function Comment({comment,
     createdAt,

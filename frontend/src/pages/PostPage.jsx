@@ -16,6 +16,7 @@ import { useEffect, useState } from "react";
 // import useShowToast from "../hooks/useShowToast";
 import { useNavigate, useParams } from "react-router-dom";
 import { DeleteIcon } from "@chakra-ui/icons";
+import React from "react";
 
 function PostPage() {
   const [liked, setLiked] = useState(false)
@@ -43,7 +44,8 @@ function PostPage() {
               1d ago
             </Text>
 
-            <DeleteIcon
+            <DeleteIcon 
+              // @ts-ignore
               size={20}
               cursor={"pointer"}
               // onClick={handleDeletePost}
