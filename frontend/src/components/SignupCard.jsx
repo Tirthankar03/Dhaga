@@ -78,7 +78,7 @@ export default function SignupCard() {
       //setting the data to the global user state
       setUser(data); //data in json format
     } catch (err) {
-      console.log(err);
+      showToast("Error", err,"error");
     }
    }
 

@@ -61,7 +61,8 @@ const loginUser = async (req, res) => {
             _id: user._id,
             name: user.name,
             email: user.email,
-            username: user.username
+            username: user.username,
+            message: "User logged in successfully💦"
         })
 
     } catch (err) {
