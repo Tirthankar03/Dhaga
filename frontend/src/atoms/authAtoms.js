@@ -5,6 +5,7 @@ const authScreenAtom = atom({
     default: 'login',
 })
 
+
 export default authScreenAtom;
 
 //const [value, setValue] = useState("login")

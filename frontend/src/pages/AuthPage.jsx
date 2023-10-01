@@ -13,12 +13,13 @@ function AuthPage() {
   const authScreenState = useRecoilValue(authScreenAtom);
   console.log(authScreenAtom);
   console.log(authScreenState);
-  
   return (
     <>
     {/* <SignupCard/> */}
     {/* <LoginCard/> */}
     {authScreenState === "login" ? <LoginCard/> : <SignupCard/>}
+
+    
     </>
   )
 }

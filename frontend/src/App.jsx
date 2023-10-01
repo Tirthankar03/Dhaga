@@ -8,6 +8,9 @@ import AuthPage from "./pages/AuthPage";
 import Header from "./components/Header";
 
 import React from "react";
+import userAtom from "./atoms/userAtom";
+import { useRecoilValue } from "recoil";
+import LogoutButton from "./components/LogoutButton";
 
 
 
@@ -15,22 +18,19 @@ import React from "react";
 
 
 function App() {
-
+    const user = useRecoilValue (userAtom)
+    console.log(user)
   return (
     <Container maxW="640px">
     <Header/>
      <Routes>
-      <Route path="/" element={<HomePage/>}/>
-
-      <Route path="/auth" element={<AuthPage/>}/>
+      <Route path="/" element={user ? <HomePage/> : <Navigate to="/auth"/>}/>
+      <Route path="/auth" element={ !user ? <AuthPage/> : <Navigate to="/"/> }/>
       <Route path="/:username" element={<UserPage/>}/>
       <Route path="/:username/post/:pid" element={<PostPage/>}/>
     </Routes>
 
-  
-
-
-
+    {user && <LogoutButton/>}
 
     </Container>
 
