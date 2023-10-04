@@ -17,6 +17,7 @@ import {
 import React, { useRef, useState } from 'react'
 import userAtom from '../atoms/userAtom';
 import { useRecoilState } from 'recoil';
+import usePreviewImg from '../hooks/usePreviewImg';
 
 export default function UpdateProfilePage() {
   //storing inputs in global atom state
@@ -29,7 +30,8 @@ export default function UpdateProfilePage() {
         bio: user.bio,
         password: ""
     })
-    // const fileRef = useRef(null);
+    const fileRef = useRef(null);
+    const {handleImageChange, imgUrl} = usePreviewImg();
     console.log("user is here", user);
   return (
     //all UI stuff
@@ -51,12 +53,15 @@ export default function UpdateProfilePage() {
         <FormControl >
           <Stack direction={['column', 'row']} spacing={6}>
             <Center>
-              <Avatar size="xl" boxShadow={"md"} src={user.profilePic}/>
+              <Avatar size="xl" boxShadow={"md"} src={imgUrl || user.profilePic}/>
             </Center>
             <Center w="full">
-              <Button w="full">Change Avatar</Button>
+              <Button w="full" onClick={() => {
+                fileRef.current.click()
+              }}>Change Avatar</Button>
               <input type="file" hidden 
-              // ref={fileRef}
+              ref={fileRef}
+              onChange={handleImageChange}
               />
             </Center>
           </Stack>
