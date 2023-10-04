@@ -3,6 +3,7 @@ import React from 'react'
 import userAtom from '../atoms/userAtom'
 import { useSetRecoilState } from 'recoil'
 import useShowToast from '../hooks/useShowToast';
+import { FiLogOut } from "react-icons/fi";
 
 //when we click on logout button
     // backend => clear cookies
@@ -13,6 +14,7 @@ function LogoutButton() {
     // const toast = useToast();
     const showToast = useShowToast();
     const setUser = useSetRecoilState(userAtom)
+    // @ts-ignore
     const handleLogout = async () => { 
         try {
 
@@ -68,7 +70,9 @@ function LogoutButton() {
         right={"30px"}
         size={"sm"}
         onClick={handleLogout}
-    >LogoutButton</Button>
+    >
+        <FiLogOut size={20} />
+        </Button>
   )
 }
 

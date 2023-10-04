@@ -23,6 +23,7 @@ import { useSetRecoilState } from 'recoil'
 import authScreenAtom from '../atoms/authAtoms'
 import useShowToast from '../hooks/useShowToast'
 import userAtom from '../atoms/userAtom'
+import axios from 'axios';
 
 export default function LoginCard() {
   const [showPassword, setShowPassword] = useState(false)
@@ -35,6 +36,7 @@ export default function LoginCard() {
 
   const showToast = useShowToast();
 
+// @ts-ignore
 const handleLogin = async () => { 
   try {
     // router.post("/login", loginUser);
@@ -48,6 +50,15 @@ const handleLogin = async () => {
 
     const data = await res.json();
     console.log(data);
+
+  //   const response = await axios.post("/api/users/logout", {}, {
+  //     headers: {
+  //         "Content-Type": "application/json",
+  //     },
+  // });
+
+  // const data = response.data;
+  // console.log("data", data);
 
     if (data.error) {
       showToast("Error", data.error,"error");
