@@ -14,7 +14,7 @@ router.post("/logout", logoutUser);
 //dealing with id for the first time 
 //protectRoute(+user_Fromtoken) => followUnfollowUser(user._id)
 router.post("/follow/:id", protectRoute, followUnfollowUser);
-router.post("/update/:id", protectRoute, updateUser);
+router.put("/update/:id", protectRoute, updateUser);
 
 
 

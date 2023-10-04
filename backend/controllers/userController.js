@@ -1,6 +1,7 @@
 import User from '../models/userModel.js'
 import bcrypt from 'bcryptjs'
 import generateTokenAndSetCookie from "../utils/helpers/generateTokenAndSetCookie.js";
+import { v2 as cloudinary } from "cloudinary";
 
 
 
@@ -124,7 +125,9 @@ const followUnfollowUser = async (req, res) => {
 
 
 const updateUser = async (req,res) => {
-    const {name, username, password, email, profilePic, bio} = req.body;
+    //we get these inputs from the form
+    const {name, username, password, email,  bio} = req.body;
+    let {profilePic} = req.body;
     const userId = req.user._id;
     try {
         let user = await User.findById(userId);
@@ -139,6 +142,17 @@ const updateUser = async (req,res) => {
             const hashedPassword = await bcrypt.hash(password, salt);
             user.password = hashedPassword;
         }
+//profilePic: the pic from the form data
+//user.ProfilePic: the user that we searched up right now (doesn't have anything rn)
+        if(profilePic){
+            if (user.profilePic) {
+                await cloudinary.uploader.destroy(user.profilePic.split("/").pop().split(".")[0]);
+            }
+            const uploadResponse = await cloudinary.uploader.upload(profilePic)
+            //after upload to cloudinary, it returns us an obj that has secure url
+            profilePic = uploadResponse.secure_url;
+            //replaces the base64 string with the secure_url, need to use let
+        }
 
         user.name = name || user.name;
         user.email = email || user.email;
@@ -147,6 +161,9 @@ const updateUser = async (req,res) => {
         user.profilePic  = profilePic || user.profilePic;
 
         user = await user.save();
+
+        //password should be null in response
+        user.password = null;
 
         res.status(200).json({message: "Profile updated successfully😳", user});
     } catch (err) {

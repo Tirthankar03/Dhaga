@@ -18,6 +18,7 @@ import React, { useRef, useState } from 'react'
 import userAtom from '../atoms/userAtom';
 import { useRecoilState } from 'recoil';
 import usePreviewImg from '../hooks/usePreviewImg';
+import useShowToast from '../hooks/useShowToast';
 
 export default function UpdateProfilePage() {
   //storing inputs in global atom state
@@ -33,8 +34,30 @@ export default function UpdateProfilePage() {
     const fileRef = useRef(null);
     const {handleImageChange, imgUrl} = usePreviewImg();
     console.log("user is here", user);
+
+    const showToast = useShowToast();
+
+    const handleSubmit = async(e) => { 
+      e.preventDefault();
+      try {
+        //user._id: our current user id is passed
+        const res = await fetch(`/api/users/update/${user._id}`,{
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json", 
+          },
+          //imgUrl is base64 and the uploading to the cloudinary part is handled in the backend
+          body: JSON.stringify({...inputs, profilePic: imgUrl})
+        })
+        const data = await res.json();
+        console.log(data);
+      } catch (error) {
+        showToast('Error', error, 'error')
+      }
+     }
   return (
     //all UI stuff
+    <form onSubmit={handleSubmit}>
     <Flex
       align={'center'}
       justify={'center'} my={6}>
@@ -66,7 +89,7 @@ export default function UpdateProfilePage() {
             </Center>
           </Stack>
         </FormControl>
-        <FormControl  isRequired>
+        <FormControl >
           <FormLabel>Full name</FormLabel>
           <Input
             placeholder="John Doe"
@@ -78,7 +101,7 @@ export default function UpdateProfilePage() {
             }}
           />
         </FormControl>
-        <FormControl  isRequired>
+        <FormControl  >
           <FormLabel>User name</FormLabel>
           <Input
             placeholder="johndoe"
@@ -90,7 +113,7 @@ export default function UpdateProfilePage() {
             }}
           />
         </FormControl>
-        <FormControl  isRequired>
+        <FormControl  >
           <FormLabel>Email address</FormLabel>
           <Input
             placeholder="your-email@example.com"
@@ -102,7 +125,7 @@ export default function UpdateProfilePage() {
             }}
           />
         </FormControl>
-        <FormControl  isRequired>
+        <FormControl  >
           <FormLabel>Bio</FormLabel>
           <Input
             placeholder="your bio."
@@ -114,7 +137,7 @@ export default function UpdateProfilePage() {
             }}
           />
         </FormControl>
-        <FormControl isRequired>
+        <FormControl >
           <FormLabel>Password</FormLabel>
           <Input
             placeholder="password"
@@ -138,11 +161,13 @@ export default function UpdateProfilePage() {
             w="full"
             _hover={{
               bg: 'green.500',
-            }}>
+            }}
+            type="submit">
             Submit
           </Button>
         </Stack>
       </Stack>
     </Flex>
+    </form>
   )
 }
