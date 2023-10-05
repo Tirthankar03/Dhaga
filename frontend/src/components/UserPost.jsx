@@ -5,13 +5,13 @@ import { BsThreeDots } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import Actions from "./Actions.jsx";
 import { useState } from "react";
+import React from "react";
 
 const UserPost = ({postImg, postTitle, likes,replies}) => {
   const [liked, setLiked] = useState(false);
 
   return (
     <Link to={"/markzuckerberg/post/1"}>
-      <Box>UserPost</Box>
       <Flex gap={3} mb={4} py={5}>
         <Flex flexDirection={"column"} alignItems={"center"}>
           <Avatar size="md" name="Mark Zuckerberg" src="/zuck-avatar.png" />

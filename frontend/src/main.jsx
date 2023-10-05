@@ -38,7 +38,8 @@ const theme = extendTheme({ config, styles, colors });
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
+	//React.StrictMode renders every components twice, on development
+//   <React.StrictMode> 
 	<RecoilRoot>
 
   <BrowserRouter>
@@ -49,5 +50,5 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   </BrowserRouter>
 
 	</RecoilRoot>
-  </React.StrictMode>,
+//   </React.StrictMode>,
 )

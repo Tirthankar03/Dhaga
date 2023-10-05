@@ -4,6 +4,7 @@ import userAtom from '../atoms/userAtom'
 import { useSetRecoilState } from 'recoil'
 import useShowToast from '../hooks/useShowToast';
 import { FiLogOut } from "react-icons/fi";
+import { Navigate, useNavigate } from 'react-router-dom';
 
 //when we click on logout button
     // backend => clear cookies
@@ -14,6 +15,7 @@ function LogoutButton() {
     // const toast = useToast();
     const showToast = useShowToast();
     const setUser = useSetRecoilState(userAtom)
+    const Navigate = useNavigate()
     // @ts-ignore
     const handleLogout = async () => { 
         try {
@@ -54,6 +56,7 @@ function LogoutButton() {
                 //     duration: 3000,
                 //     isClosable: true
                 // })
+                // Navigate('/')
                 showToast("Success!", data.message, "success")
             }
             
