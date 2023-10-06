@@ -32,6 +32,7 @@ export default function UpdateProfilePage() {
         password: ""
     })
     const fileRef = useRef(null);
+    const [updating, setUpdating] = useState(false)
     const {handleImageChange, imgUrl} = usePreviewImg();
     console.log("user is here", user);
 
@@ -39,6 +40,8 @@ export default function UpdateProfilePage() {
 
     const handleSubmit = async(e) => { 
       e.preventDefault();
+      if(updating) return;
+      setUpdating(true)
       try {
         //user._id: our current user id is passed
         const res = await fetch(`/api/users/update/${user._id}`,{
@@ -50,9 +53,21 @@ export default function UpdateProfilePage() {
           body: JSON.stringify({...inputs, profilePic: imgUrl})
         })
         const data = await res.json();
-        console.log(data);
+        if (data.error) {
+        showToast('Error', data.error, 'error')
+        return;
+        }
+
+        showToast('Success', "Profile updated successfully", 'success')
+    //real stupid bug
+        // setUser(data);
+        // delete data.message;
+        // localStorage.setItem("user-threads", JSON.stringify(data))
+        console.log("profile updated setUser, user state",data);
       } catch (error) {
         showToast('Error', error, 'error')
+      }finally{
+        setUpdating(false)
       }
      }
   return (
@@ -162,7 +177,8 @@ export default function UpdateProfilePage() {
             _hover={{
               bg: 'green.500',
             }}
-            type="submit">
+            type="submit"
+            isLoading={updating}>
             Submit
           </Button>
         </Stack>

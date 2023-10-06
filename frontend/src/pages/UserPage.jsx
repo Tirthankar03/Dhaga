@@ -13,6 +13,7 @@ function UserPage() {
   const showToast = useShowToast();
   //fetch data using useEffect
   useEffect(() => {
+     // @ts-ignore
      const getUser = async () => { 
       try {
         const res = await axios.get(`/api/users/profile/${username}`)
