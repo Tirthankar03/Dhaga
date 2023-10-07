@@ -3,11 +3,12 @@ import UserHeader from ".././components/UserHeader";
 import UserPost from ".././components/UserPost";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { useToast } from "@chakra-ui/react";
+import { Flex, Spinner, useToast } from "@chakra-ui/react";
 import useShowToast from "../hooks/useShowToast";
 
 function UserPage() {
   const [user, setUser] = useState(null)
+  const [loading, setLoading] = useState(true)
   //named according to the dynamic route path set in App.jsx
   const {username} = useParams();
   const showToast = useShowToast();
@@ -33,17 +34,25 @@ function UserPage() {
         showToast("Error",error.response.data.message, "error");
         //   console.log(error.response.data);
           // console.log(error);
+      }finally{
+        setLoading(false)
       }
     }
       getUser();
     }, [username])
 
 
-
-
+ 
+    if (!user && loading ) {
+      return (
+        <Flex justifyContent={"center"}>
+          <Spinner size='xl'/>
+        </Flex>
+      )
+    }
     
     
-    if(!user) return null;
+    if(!user && !loading) return <h1>User not found</h1>;
     console.log("user", user);
   
   return (

@@ -33,11 +33,13 @@ export default function LoginCard() {
     password: ""
   });
   const setUser = useSetRecoilState(userAtom);
+  const [loading, setLoading] = useState(false)
 
   const showToast = useShowToast();
 
 // @ts-ignore
 const handleLogin = async () => { 
+  setLoading(true)
   try {
     // router.post("/login", loginUser);
     const res = await fetch("/api/users/login", {
@@ -73,6 +75,8 @@ const handleLogin = async () => {
     }
   } catch (err) {
     showToast("Error", err, "error")
+  }finally{
+    setLoading(false)
   }
  }
 
@@ -131,7 +135,8 @@ const handleLogin = async () => {
                 _hover={{
                   bg: useColorModeValue("gray.700", "gray.800")
                 }}
-                onClick={handleLogin}>
+                onClick={handleLogin}
+                isLoading={loading}>
                 Login
               </Button>
             </Stack>

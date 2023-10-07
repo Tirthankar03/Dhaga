@@ -58,6 +58,7 @@ function LogoutButton() {
                 // })
                 // Navigate('/')
                 showToast("Success!", data.message, "success")
+                Navigate("/");
             }
             
 

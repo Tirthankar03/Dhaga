@@ -33,6 +33,7 @@ export default function UpdateProfilePage() {
     })
     const fileRef = useRef(null);
     const [updating, setUpdating] = useState(false)
+    //base64
     const {handleImageChange, imgUrl} = usePreviewImg();
     console.log("user is here", user);
 
