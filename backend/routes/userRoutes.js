@@ -5,7 +5,7 @@ const router = express.Router();
 
 
 
-router.get("/profile/:username", getUserProfile);
+router.get("/profile/:query", getUserProfile);
 
 router.post("/signup", signupUser);
 router.post("/login", loginUser);
