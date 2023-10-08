@@ -14,10 +14,57 @@ import {
 	Text,
 	useDisclosure,
 } from "@chakra-ui/react";
+import React, { useState } from "react";
+import userAtom from "../atoms/userAtom";
+import { useRecoilValue } from "recoil";
+import useShowToast from "../hooks/useShowToast";
 
-const Actions = ({liked, setLiked}) => {
+const Actions = ({post}) => {
+	const user = useRecoilValue(userAtom);
+	const [liked, setLiked] = useState(post.likes.includes(user?._id));
+	const [Cpost, setCpost] = useState(post)
+	const showToast = useShowToast();
+	//we don't want the user to keep spamming the like button if the server response is slow
+	const [isLiking, setIsLiking] = useState(false)
+
+	const handleLikeAndUnlike = async() => {
+		if(!user) return showToast('Error', "You must be logged in to like a post", 'error')
+		if(isLiking) return;
+		setIsLiking(true)
+		try {
+			const res = await fetch(`/api/posts/like/${post._id}`,{
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+				},
+			});
+			const data = await res.json();
+			console.log(data);
+			if(data.error) return showToast('Error', data.error, 'error');
+			
+			if (!liked) {
+				//add the id of the current user to post.likes array
+				setCpost({...Cpost, likes: [...post.likes, user._id]});
+			} else {
+				setCpost({...Cpost, likes: post.likes.filter(id => id !== user._id)});
+			}
+
+			setLiked(!liked);
+
+
+
+		} catch (error) {
+			showToast('Error', error.message, 'error')
+		}finally{
+			setIsLiking(false)
+		}
+	
+	}
+	
   return (
 	<>
+	<Flex flexDirection="column">
+		
 	<Flex gap={3} my={2} onClick={(e) => e.preventDefault()}>
 	<svg
 					aria-label='Like'
@@ -27,7 +74,7 @@ const Actions = ({liked, setLiked}) => {
 					role='img'
 					viewBox='0 0 24 22'
 					width='20'
-					onClick= {() => setLiked(!liked)}
+					onClick= {handleLikeAndUnlike}
 				>
 					<path
 						d='M1 7.66c0 4.575 3.899 9.086 9.987 12.934.338.203.74.406 1.013.406.283 0 .686-.203 1.013-.406C19.1 16.746 23 12.234 23 7.66 23 3.736 20.245 1 16.672 1 14.603 1 12.98 1.94 12 3.352 11.042 1.952 9.408 1 7.328 1 3.766 1 1 3.736 1 7.66Z'
@@ -56,6 +103,12 @@ const Actions = ({liked, setLiked}) => {
 				</svg>
 				<RepostSVG />
 				<ShareSVG />
+	</Flex>
+				<Flex gap={2} alignItems={"center"}>
+<Text>{post.replies.length}replies</Text>
+<Box w={0.5} h={0.5} bg="gray.light" my={2}></Box>
+<Text color={"gray.light"} fontSize="sm">{post.likes.length} likes</Text>
+</Flex>
     </Flex>
 	</>
   )
@@ -86,6 +139,7 @@ const RepostSVG = () => {
 
 const ShareSVG = () => {
 	return (
+		<>
 		
 		<svg
 			aria-label='Share'
@@ -115,6 +169,9 @@ const ShareSVG = () => {
 				strokeWidth='2'
 			></polygon>
 		</svg>
+
+
+</>
 	);
 };
 
