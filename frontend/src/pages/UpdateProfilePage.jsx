@@ -19,6 +19,7 @@ import userAtom from '../atoms/userAtom';
 import { useRecoilState } from 'recoil';
 import usePreviewImg from '../hooks/usePreviewImg';
 import useShowToast from '../hooks/useShowToast';
+import { useNavigate } from 'react-router-dom';
 
 export default function UpdateProfilePage() {
   //storing inputs in global atom state
@@ -38,6 +39,7 @@ export default function UpdateProfilePage() {
     console.log("user is here", user);
 
     const showToast = useShowToast();
+    const Navigate = useNavigate()
 
     const handleSubmit = async(e) => { 
       e.preventDefault();
@@ -58,7 +60,7 @@ export default function UpdateProfilePage() {
         showToast('Error', data.error, 'error')
         return;
         }
-
+        Navigate(-1)
         showToast('Success', "Profile updated successfully", 'success')
     //real stupid bug
         // setUser(data);

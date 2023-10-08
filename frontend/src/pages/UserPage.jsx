@@ -5,10 +5,13 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Flex, Spinner, useToast } from "@chakra-ui/react";
 import useShowToast from "../hooks/useShowToast";
+import Post from "../components/Post";
 
 function UserPage() {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [posts, setPosts] = useState([])
+  const [fetchingPosts, setFetchingPosts] = useState(true)
   //named according to the dynamic route path set in App.jsx
   const {username} = useParams();
   const showToast = useShowToast();
@@ -38,7 +41,23 @@ function UserPage() {
         setLoading(false)
       }
     }
+
+    const getPosts = async () => { 
+      setFetchingPosts(true)
+      try {
+        const res = await fetch(`/api/posts/user/${username}`);
+        const data = await res.json();
+        console.log("setting them into posts state",data);
+        setPosts(data);
+      } catch (error) {
+        showToast('Error', error.message, 'error')
+        setPosts([]);
+      } finally{
+        setFetchingPosts(false);
+      }
+     }
       getUser();
+      getPosts();
     }, [username])
 
 
@@ -58,10 +77,18 @@ function UserPage() {
   return (
     <>
     <UserHeader user={user}/>
-    <UserPost likes={1200} replies={634} postImg="/post1.png" postTitle="Let's talk about threads"  />
-    <UserPost likes={69} replies={355} postImg="/post2.png" postTitle="learn something awesome"  />
-    <UserPost likes={354} replies={69} postImg="/post3.png" postTitle="abracadabra"  />
-    <UserPost likes={140} replies={69} postTitle="nigger, less go...I aint got any image" postImg={undefined}  />
+    {!fetchingPosts && posts.length === 0 && <h1>User has no posts</h1>}
+    
+    {fetchingPosts && (
+      <Flex justifyContent={"center"} my={12}>
+        <Spinner size={"xl"}/>
+      </Flex>
+    )}
+
+    {posts.map((post) => (
+      <Post key={post._id} post={post} postedBy={post.postedBy} />
+    ))}
+
     </>
 )
 
