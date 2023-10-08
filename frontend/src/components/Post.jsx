@@ -20,7 +20,7 @@ const Post = ({post, postedBy }) => {
         try {
             const res = await fetch(`/api/users/profile/${postedBy}`)
             const data = await res.json()       
-            console.log(data);
+            console.log(" post page, putting this data into global user (a single post)",data);
             if (data.error) {
                 showToast('Error', data.error, 'error')
                 return;
@@ -34,7 +34,7 @@ const Post = ({post, postedBy }) => {
 
     getUser();
 }, [postedBy])
-  
+
 
 if(!user) return null
 

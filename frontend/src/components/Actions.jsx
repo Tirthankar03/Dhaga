@@ -3,6 +3,7 @@ import {
 	Button,
 	Flex,
 	FormControl,
+	FormLabel,
 	Input,
 	Modal,
 	ModalBody,
@@ -20,12 +21,26 @@ import { useRecoilValue } from "recoil";
 import useShowToast from "../hooks/useShowToast";
 
 const Actions = ({post}) => {
+
+	console.log("this is the post in actions", post);
 	const user = useRecoilValue(userAtom);
 	const [liked, setLiked] = useState(post.likes.includes(user?._id));
 	const [Cpost, setCpost] = useState(post)
-	const showToast = useShowToast();
 	//we don't want the user to keep spamming the like button if the server response is slow
 	const [isLiking, setIsLiking] = useState(false)
+	const [isReplying, setIsReplying] = useState(false)
+	
+	//reply to a post
+	const { isOpen, onOpen, onClose } = useDisclosure()
+	const [reply, setReply] = useState("")
+	
+	
+	const showToast = useShowToast();
+
+
+
+
+
 
 	const handleLikeAndUnlike = async() => {
 		if(!user) return showToast('Error', "You must be logged in to like a post", 'error')
@@ -61,6 +76,36 @@ const Actions = ({post}) => {
 	
 	}
 	
+
+	const handleReply = async() => { 
+		if(!user) return showToast('Error', "You must be logged in to reply to a post", 'error')
+		if(isReplying) return;
+		setIsReplying(true)
+		try {
+			const res = await fetch(`/api/posts/reply/${post._id}`,{
+				method: "PUT",
+				headers: {
+					"Content-Type":"application/json",
+				},
+				body: JSON.stringify({text:reply})
+			})
+
+			const data = await res.json();
+			if(data.error) return showToast('Error', data.error, 'error')
+			setCpost({...post, replies: [...post.replies, data.reply]})
+			showToast('Success', "Reply posted successfully", 'success')
+			console.log(data);
+			onClose();
+			setReply("");
+		} catch (error) {
+			showToast('Error', error.message, 'error')
+		}finally{
+			setIsReplying(false);
+		}
+	}
+
+
+
   return (
 	<>
 	<Flex flexDirection="column">
@@ -90,7 +135,7 @@ const Actions = ({post}) => {
 					role='img'
 					viewBox='0 0 24 24'
 					width='20'
-					// onClick={onOpen}
+					onClick={onOpen} //Callback function to set a truthy value for the isOpen parameter.
 				>
 					<title>Comment</title>
 					<path
@@ -105,9 +150,44 @@ const Actions = ({post}) => {
 				<ShareSVG />
 	</Flex>
 				<Flex gap={2} alignItems={"center"}>
-<Text>{post.replies.length}replies</Text>
+	<Text>{post.replies.length} replies</Text>
 <Box w={0.5} h={0.5} bg="gray.light" my={2}></Box>
+
+
+
 <Text color={"gray.light"} fontSize="sm">{post.likes.length} likes</Text>
+
+
+
+<Modal
+        isOpen={isOpen} //If true, it sets the controlled component to its visible state.
+        onClose={onClose} //Callback function to set a falsy value for the isOpen parameter.
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader> </ModalHeader>
+          <ModalCloseButton />
+          <ModalBody pb={6}>
+
+            <FormControl>
+              <Input placeholder='Reply goes here....' 
+			  	value={reply}
+				onChange={(e) => setReply(e.target.value)}
+			  />
+            </FormControl>
+
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme='blue' size={"sm"} mr={3}  onClick={handleReply} isLoading={isReplying} >
+              Reply
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+
+
 </Flex>
     </Flex>
 	</>

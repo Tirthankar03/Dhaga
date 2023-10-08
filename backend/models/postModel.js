@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+// @ts-ignore
 const postSchema = mongoose.Schema(
 	{
 		postedBy: {

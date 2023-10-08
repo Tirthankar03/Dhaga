@@ -28,7 +28,7 @@ function HomePage() {
           showToast('Error', data.error, 'error');
           return;
         }
-        // console.log(data);
+        console.log("Homepage, setting this data to posts",data);
         setPosts(data);
       } catch (error) {
         showToast("Error", error.message, "error");
